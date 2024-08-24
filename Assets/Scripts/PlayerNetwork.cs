@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerNetwork : NetworkBehaviour
 {
+
+    [SerializeField] GameObject ballNetworkPrefab;
+
     private NetworkVariable<int> randomNumber = new NetworkVariable<int>(0,
     NetworkVariableReadPermission.Everyone,
     NetworkVariableWritePermission.Owner);
@@ -57,7 +60,8 @@ public class PlayerNetwork : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Y))
         {
             //TestServerRpc(new ServerRpcParams());
-            TestClientRpc(new ClientRpcParams());
+            //TestClientRpc(new ClientRpcParams());
+            Instantiate(ballNetworkPrefab).GetComponent<NetworkObject>().Spawn(true);
         }
         float moveSpeed = 4f;
         Vector3 moveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
@@ -71,7 +75,8 @@ public class PlayerNetwork : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void TestClientRpc(ClientRpcParams clientRpcParams){
+    private void TestClientRpc(ClientRpcParams clientRpcParams)
+    {
         Debug.Log("ClientRpc");
     }
 }
